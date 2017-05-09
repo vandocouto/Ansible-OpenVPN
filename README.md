@@ -1,9 +1,9 @@
 ### Playbook - Ansible OpenVPN for Ubuntu 16.04
 
-step 1 - Clone project 
+Step 1 - Clone project 
 
 <pre>
-git clone https://github.com/vandocouto/Ansible-OpenVPN.git
+# git clone https://github.com/vandocouto/Ansible-OpenVPN.git
 </pre>
 
 Step 2 - Set as variables
@@ -11,7 +11,7 @@ Step 2 - Set as variables
 <pre>
 # vim hosts
 </pre>
-
+Example: 54.152.178.130 - Server OpenVPN
 <pre>
 [openvpn]
 54.152.178.130
@@ -43,7 +43,7 @@ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts ./tasks/main.yml
 # cd /etc/openvpn/easy-rsa
 </pre>
 
-step 4 - Creating the first certificate for the first client
+Step 4 - Creating the first certificate for the first client
 
 <pre>
 # source ./vars
@@ -83,21 +83,21 @@ total 80
 
 ##### Install openvpn client
 
-step 5 - For Ubuntu/Debian run the following commands.
+Step 5 - For Ubuntu/Debian run the following commands.
 
 
 <pre>
 # apt-get install openvpn
 </pre>
 
-step 6 - Now copy the client certificates and keys along with CA certificate on your client machine using SCP or FTP. Move the files into /etc/openvpn/easy-rsa directory. Now create a new file using your favorite text editor.
+Step 6 - Now copy the client certificates and keys along with CA certificate on your client machine using SCP or FTP. Move the files into /etc/openvpn/easy-rsa directory. Now create a new file using your favorite text editor.
 
 
 <pre>
 # vim /etc/openvpn/client.ovpn
 </pre>
 
-step 7 - Create file configuration 
+Step 7 - Create file configuration 
 <pre>
 client
 dev tun
