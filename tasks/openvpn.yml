@@ -1,0 +1,79 @@
+- name: "OpenVPN | apt-get upgrade"
+  apt:
+    upgrade: dist
+
+- name: "OpenVPN | apt-get update"
+  apt:
+    update_cache: yes
+
+- name: "OpenVPN | apt-get install"
+  apt: name={{item}} state=present
+  with_items:
+   - openvpn
+   - easy-rsa
+
+- name: "OpenVPN | Create Directory"
+  file: path={{item}} state=directory mode=0755
+  with_items:
+   - /etc/openvpn
+   - /var/log/openvpn
+
+- name: "OpenVPN | Set ip forwarding"
+  sysctl:
+    name: "net.ipv4.ip_forward"
+    value: 1
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: "OpenVPN | create easy-rsa dir"
+  command: make-cadir /etc/openvpn/easy-rsa/
+  ignore_errors: yes
+
+- name: "OpenVPN | file vars"
+  template:
+   src: ../templates/vars.j2
+   dest: /etc/openvpn/easy-rsa/vars
+   backup: yes
+
+- name: "OpenVPN | files"
+  template:
+   src: ../templates/{{ item }}
+   dest: /etc/openvpn/easy-rsa/
+   mode: 755
+  with_items:
+   - input_ca.txt
+   - input_ser.txt
+   - script.sh
+   - route.sh
+
+- name: "OpenVPN | run script.sh"
+  shell: cd /etc/openvpn/easy-rsa/ ; ./script.sh
+  tags: certicate
+
+- name: "OpenVPN | server.conf"
+  template:
+   src: ../templates/{{ item }}
+   dest: /etc/openvpn/server.conf
+  with_items:
+   - server.conf.j2
+
+- name: "OpenVPN | rc.local"
+  lineinfile:
+   dest: /etc/rc.local
+   line: /etc/openvpn/easy-rsa/route.sh
+   insertbefore: exit 0
+   state: present
+   create: yes
+   backup: yes
+
+- name: "OpenVPN | Restart server"
+  become: yes
+  shell: sleep 3 && /sbin/shutdown -r now "Ansible system package"
+  ignore_errors: yes
+
+
+
+
+
+

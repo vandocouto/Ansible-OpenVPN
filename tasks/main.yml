@@ -1,0 +1,10 @@
+---
+# tasks file for ansible-openvpn
+- name: "Hosts"
+  hosts: all
+  become: yes
+
+  tasks:
+
+    - include: openvpn.yml
+      tags: openvpn
