@@ -11,7 +11,16 @@ Step 2 - Set as variables
 <pre>
 # vim hosts
 </pre>
-Example: 54.152.178.130 - Server OpenVPN
+
+###### Configure according to your environment
+
+Example: 
+
+54.152.178.130 - Server OpenVPN
+
+ansible_ssh_private_key_file=chave/Blog-Estudo.pem
+
+
 <pre>
 [openvpn]
 54.152.178.130
